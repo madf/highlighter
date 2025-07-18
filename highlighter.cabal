@@ -5,13 +5,17 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           highlighter
-version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/highlighter#readme>
-homepage:       https://github.com/githubuser/highlighter#readme
-bug-reports:    https://github.com/githubuser/highlighter/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2025 Author name here
+version:        0.2.3.0
+description:    Processes source code using tons of lexers, tokenizing it and formatting it as e.g. HTML.
+                .
+                Very similar to the Python Pygments library; many lexers directly converted from it.
+homepage:       https://github.com/madf/highlighter#readme
+bug-reports:    https://github.com/madf/highlighter/issues
+author:         Alex Suraci,
+                Maksym Mamontov
+maintainer:     i.am@toogeneric.com,
+                madf@madf.info
+copyright:      2025 Alex Suraci, Maksym Mamontov
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
@@ -21,7 +25,12 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/highlighter
+  location: https://github.com/madf/highlighter
+
+flag executable
+  description: Install a "highlighter" executable for highlighting source code as HTML.
+  manual: False
+  default: False
 
 library
   exposed-modules:
@@ -149,6 +158,8 @@ library
       Paths_highlighter
   hs-source-dirs:
       src
+  default-extensions:
+      OverloadedStrings
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
@@ -161,7 +172,7 @@ library
     , text
   default-language: Haskell2010
 
-executable highlighter-exe
+executable highlighter
   main-is: Main.hs
   other-modules:
       Paths_highlighter
@@ -169,6 +180,8 @@ executable highlighter-exe
       Paths_highlighter
   hs-source-dirs:
       app
+  default-extensions:
+      OverloadedStrings
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
@@ -181,25 +194,7 @@ executable highlighter-exe
     , pcre-light
     , text
   default-language: Haskell2010
-
-test-suite highlighter-test
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  other-modules:
-      Paths_highlighter
-  autogen-modules:
-      Paths_highlighter
-  hs-source-dirs:
-      test
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      base >=4.7 && <5
-    , blaze-html
-    , blaze-markup
-    , bytestring
-    , filepath
-    , highlighter
-    , mtl
-    , pcre-light
-    , text
-  default-language: Haskell2010
+  if flag(executable)
+    buildable: True
+  else
+    buildable: False

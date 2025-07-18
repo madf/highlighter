@@ -1,10 +1,15 @@
 name:                highlighter
-version:             0.1.0.0
-github:              "githubuser/highlighter"
+version:             0.2.3.0
+github:              "madf/highlighter"
 license:             BSD-3-Clause
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2025 Author name here"
+author:
+- "Alex Suraci"
+- "Maksym Mamontov"
+maintainer:
+- "i.am@toogeneric.com"
+- "madf@madf.info"
+copyright:           "2025 Alex Suraci, Maksym Mamontov"
+license-file:        LICENSE
 
 extra-source-files:
 - README.md
@@ -17,7 +22,16 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/highlighter#readme>
+description: |
+  Processes source code using tons of lexers, tokenizing it and formatting it as e.g. HTML.
+  .
+  Very similar to the Python Pygments library; many lexers directly converted from it.
+
+flags:
+  executable:
+    description: Install a "highlighter" executable for highlighting source code as HTML.
+    default: false
+    manual: false
 
 dependencies:
 - base >= 4.7 && < 5
@@ -40,24 +54,22 @@ ghc-options:
 - -Wpartial-fields
 - -Wredundant-constraints
 
+default-extensions:
+  OverloadedStrings
+
 library:
   source-dirs: src
 
 executables:
-  highlighter-exe:
+  highlighter:
+    when:
+      - condition: flag(executable)
+        then:
+          buildable: true
+        else:
+          buildable: false
     main:                Main.hs
     source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - highlighter
-
-tests:
-  highlighter-test:
-    main:                Spec.hs
-    source-dirs:         test
     ghc-options:
     - -threaded
     - -rtsopts
