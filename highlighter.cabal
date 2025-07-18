@@ -153,6 +153,7 @@ library
   build-depends:
       base >=4.7 && <5
     , blaze-html
+    , blaze-markup
     , bytestring
     , filepath
     , mtl
@@ -172,6 +173,7 @@ executable highlighter-exe
   build-depends:
       base >=4.7 && <5
     , blaze-html
+    , blaze-markup
     , bytestring
     , filepath
     , highlighter
@@ -193,6 +195,7 @@ test-suite highlighter-test
   build-depends:
       base >=4.7 && <5
     , blaze-html
+    , blaze-markup
     , bytestring
     , filepath
     , highlighter

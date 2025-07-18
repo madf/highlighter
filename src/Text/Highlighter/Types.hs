@@ -178,9 +178,27 @@ anyOf ms = AnyOf ms
 shortName :: TokenType -> String
 shortName ((_ :. a) :. b) =
     shortName a ++ shortName b
+shortName Keyword = "k"
+shortName (Keyword :. Constant) = "kc"
+shortName (Keyword :. Declaration) = "kd"
+shortName (Keyword :. Namespace) = "kn"
+shortName (Keyword :. Pseudo) = "kp"
+shortName (Keyword :. Reserved) = "kr"
+shortName (Keyword :. Type) = "kt"
+shortName Name = "n"
+shortName (Name :. Attribute) = "na"
 shortName (Name :. Constant) = "no"
 shortName (Name :. Entity) = "ni"
 shortName (Name :. Property) = "py"
+shortName (Arbitrary "Keyword") = "k"
+shortName (Arbitrary "Keyword" :. Arbitrary "Constant") = "kc"
+shortName (Arbitrary "Keyword" :. Arbitrary "Declaration") = "kd"
+shortName (Arbitrary "Keyword" :. Arbitrary "Namespace") = "kn"
+shortName (Arbitrary "Keyword" :. Arbitrary "Pseudo") = "kp"
+shortName (Arbitrary "Keyword" :. Arbitrary "Reserved") = "kr"
+shortName (Arbitrary "Keyword" :. Arbitrary "Type") = "kt"
+shortName (Arbitrary "Name") = "n"
+shortName (Arbitrary "Name" :. Arbitrary "Attribute") = "na"
 shortName (Arbitrary "Name" :. Arbitrary "Constant") = "no"
 shortName (Arbitrary "Name" :. Arbitrary "Entity") = "ni"
 shortName (Arbitrary "Name" :. Arbitrary "Property") = "py"
@@ -206,6 +224,10 @@ shortName (a :. Arbitrary "Double") =
     shortName a ++ "2"
 shortName (a :. b) =
     shortName a ++ shortName b
+shortName Whitespace = "w"
+shortName (Arbitrary "Whitespace") = "w"
+shortName Escape = "esc"
+shortName (Arbitrary "Escape") = "esc"
 shortName Error = "err"
 shortName (Arbitrary "Error") = "err"
 shortName Number = "m"

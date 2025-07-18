@@ -1,6 +1,7 @@
 module Text.Highlighter.Lexer where
 
-import Control.Monad.Error
+import Control.Monad
+import Control.Monad.Except
 import Control.Monad.State
 import Prelude hiding (lex)
 import Text.Regex.PCRE.Light hiding (compile)
@@ -19,19 +20,15 @@ data LexerState =
         }
     deriving Show
 
-type LexerM = ErrorT LexerError (State LexerState)
+type LexerM = ExceptT LexerError (State LexerState)
 
 data LexerError
     = NoMatchFor BS.ByteString
     | OtherLexerError String
     deriving Show
 
-instance Error LexerError where
-    noMsg = OtherLexerError "unknown"
-    strMsg = OtherLexerError
-
 runLexer :: Lexer -> BS.ByteString -> Either LexerError [Token]
-runLexer l s = evalState (runErrorT lex) (LexerState l s [lStart l] [])
+runLexer l s = evalState (runExceptT lex) (LexerState l s [lStart l] [])
 
 lex :: LexerM [Token]
 lex = do
@@ -40,11 +37,10 @@ lex = do
     if done
         then gets lsLexed
         else do
-
-    ms <- getState
-    ts <- tryAll ms
-    modify $ \ls -> ls { lsLexed = lsLexed ls ++ ts }
-    lex
+            ms <- getState
+            ts <- tryAll ms
+            modify $ \ls -> ls { lsLexed = lsLexed ls ++ ts }
+            lex
   where
     getState = gets (head . lsState)
 
